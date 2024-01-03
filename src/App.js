@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Web3 from "web3";
+import contractABI from "./abi.json";
 
-const LicenseForm = () => {
+const App = () => {
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
   const [account, setAccount] = useState(null);
@@ -12,19 +13,15 @@ const LicenseForm = () => {
   useEffect(() => {
     const initWeb3 = async () => {
       try {
-        // Connect to the local Ethereum node
         const web3Instance = new Web3("http://localhost:8545");
         setWeb3(web3Instance);
 
-        // Get the accounts
         const accounts = await web3Instance.eth.getAccounts();
         setAccount(accounts[0]);
 
-        // Set the contract address (replace with your actual contract address)
-        const contractAddress = "CONTRACT_ADDRESS";
+        const contractAddress = "0xAE559AdFF9541E0784aaabD0e7707617A5Ce71C6";
         const contractInstance = new web3Instance.eth.Contract(
-          // Replace with your contract ABI
-          [],
+          contractABI, 
           contractAddress
         );
         setContract(contractInstance);
@@ -62,7 +59,7 @@ const LicenseForm = () => {
     e.preventDefault();
 
     try {
-      await contract.methods.sendTransaction().send({
+      await contract.methods.transferLicense(newLicensor, "SongName", 123).send({
         from: account,
         value: web3.utils.toWei(amount, "ether"),
       });
@@ -106,4 +103,4 @@ const LicenseForm = () => {
   );
 };
 
-export default LicenseForm;
+export default App;
