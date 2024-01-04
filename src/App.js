@@ -13,11 +13,8 @@ const App = () => {
   useEffect(() => {
     const initWeb3 = async () => {
       try {
-        const web3Instance = new Web3("http://localhost:8545");
-        setWeb3(web3Instance);
 
-        const accounts = await web3Instance.eth.getAccounts();
-        setAccount(accounts[0]);
+        connectWallet();
 
         const contractAddress = "0xAE559AdFF9541E0784aaabD0e7707617A5Ce71C6";
         const contractInstance = new web3Instance.eth.Contract(
